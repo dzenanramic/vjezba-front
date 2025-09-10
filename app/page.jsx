@@ -71,7 +71,7 @@ export default function Home() {
     try {
       const form = new FormData();
       form.append("img", pants, pants.name);
-      const res = await fetch("http://localhost:8000/upload/", {
+      const res = await fetch("https://d5af60139cfe.ngrok-free.app/upload/", {
         method: "POST",
         body: form,
       });

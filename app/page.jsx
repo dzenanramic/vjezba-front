@@ -13,7 +13,7 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   // Use a consistent base URL for all API calls
-  const API_BASE = "https://d5af60139cfe.ngrok-free.app";
+  const API_BASE = "https://vjezba-back.onrender.com";
 
   const handleInput = (e) => {
     setMess(e.target.value);

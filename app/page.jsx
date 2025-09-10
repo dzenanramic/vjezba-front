@@ -56,7 +56,7 @@ export default function Home() {
     try {
       const form = new FormData();
       form.append("img", pic, pic.name);
-      const res = await fetch("https://vjezba-back.onrender.com/upload/", {
+      const res = await fetch("http://localhost:8000/upload/", {
         method: "POST",
         body: form,
       });
@@ -71,7 +71,7 @@ export default function Home() {
     try {
       const form = new FormData();
       form.append("img", pants, pants.name);
-      const res = await fetch("https://vjezba-back.onrender.com/upload/", {
+      const res = await fetch("http://localhost:8000/upload/", {
         method: "POST",
         body: form,
       });

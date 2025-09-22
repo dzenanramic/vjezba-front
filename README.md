@@ -34,3 +34,71 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Background Removal API
+
+A server-side endpoint `POST /api/remove-background` has been added using `@tensorflow-models/deeplab` (PASCAL model) and `sharp`.
+
+### Request
+
+Multipart/form-data with a single file field named `image`.
+
+### Response
+
+JSON containing:
+
+```
+{
+	filename: string,
+	mime: 'image/png',
+	data: 'data:image/png;base64,<...>'
+}
+```
+
+### Example (browser)
+
+```js
+async function removeBg(file) {
+  const fd = new FormData();
+  fd.append("image", file);
+  const res = await fetch("/api/remove-background", {
+    method: "POST",
+    body: fd,
+  });
+  if (!res.ok) throw new Error("Failed background removal");
+  const json = await res.json();
+  // Create an <img>
+  const img = document.createElement("img");
+  img.src = json.data; // data URL
+  document.body.appendChild(img);
+  return json;
+}
+```
+
+### Example (Node script)
+
+```js
+import fs from "node:fs";
+import fetch from "node-fetch";
+import FormData from "form-data";
+
+async function run() {
+  const form = new FormData();
+  form.append("image", fs.createReadStream("input.jpg"));
+  const res = await fetch("http://localhost:3000/api/remove-background", {
+    method: "POST",
+    body: form,
+  });
+  const json = await res.json();
+  const base64 = json.data.split(",")[1];
+  fs.writeFileSync("output.png", Buffer.from(base64, "base64"));
+}
+run();
+```
+
+### Notes
+
+- Model base is `pascal`; currently only the person class (id 15) is treated as foreground.
+- Adjust `foregroundClassIds` in `app/api/remove-background/route.ts` to include other classes.
+- For large images you may wish to resize before segmentation to improve speed.
+- Endpoint returns a data URL for simplicity; if you need a binary PNG response we can switch to streaming with a small type workaround.

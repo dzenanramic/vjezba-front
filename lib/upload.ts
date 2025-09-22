@@ -7,7 +7,6 @@ export async function uploadImage(pic: File) {
   const res = await fetch(`${API_BASE}/upload/`, {
     method: "POST",
     body: form,
-    headers: { Accept: "application/json" },
   });
 
   if (!res.ok) throw new Error(`Server returned ${res.status}`);

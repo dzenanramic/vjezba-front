@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/page.jsx"
+    "app/page.jsx",
+    "components/shared/TabButton.jsx"
   ],
   "exclude": ["node_modules"]
 }

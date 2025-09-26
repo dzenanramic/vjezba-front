@@ -2,7 +2,6 @@
 import useUploadStore from "@/store/useUploadStore";
 import { uploadImage } from "@/lib/upload";
 import ClothesCard from "../shared/ClothesCard";
-
 function UploadingPage() {
   const {
     pics,
@@ -15,17 +14,16 @@ function UploadingPage() {
     resetPhotos,
     setEditedPhotos,
     incrementBadge,
+    editedPhotos,
+    shownPhotos,
   } = useUploadStore();
-
   const uploadImg = async () => {
     setLoading(true);
     setError(null);
-
     try {
       const lastPic = pics[pics.length - 1];
       if (!lastPic) throw new Error("No image selected");
       const processed = await uploadImage(lastPic);
-      // processed is a Blob (PNG)
       addPic(processed);
       setEditedPhotos(processed);
       incrementBadge();
@@ -37,13 +35,24 @@ function UploadingPage() {
       resetPhotos();
     }
   };
-
   return (
-    <div>
-      {error && <div>{error}</div>}
-      {loading && <div>Processing image...</div>}
+    <div className="flex flex-col min-h-[85vh]">
+      <div className="flex-grow py-4 w-[95%] overflow-y-auto">
+        {error && <div>{error}</div>}
+        {loading && <div>Processing image...</div>}
+        {picURLs.map((p) => (
+          <ClothesCard key={p} url={p} />
+        ))}
 
-      <div className="flex justify-between">
+        {shownPhotos &&
+          shownPhotos.map((id) => {
+            const photo = editedPhotos.find((p) => p.id === id);
+            if (!photo) return null;
+            return <ClothesCard key={photo.id} url={photo.url} />;
+          })}
+      </div>
+      {/* Bottom buttons - fixed at bottom */}
+      <div className="flex justify-between p-4">
         <input
           type="file"
           accept="image/*"
@@ -61,14 +70,7 @@ function UploadingPage() {
           Remove Background
         </button>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-        {picURLs.map((p) => (
-          <ClothesCard key={p} url={p} />
-        ))}
-      </div>
     </div>
   );
 }
-
 export default UploadingPage;

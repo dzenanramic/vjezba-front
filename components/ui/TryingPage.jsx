@@ -6,8 +6,9 @@ function TryingPage() {
   const { editedPhotos } = useUploadStore();
 
   return (
-    <div>
-      {editedPhotos && editedPhotos.map((p) => <ClothesCard key={p} url={p} />)}
+    <div style={{ height: "100%" }}>
+      {editedPhotos &&
+        editedPhotos.map((p) => <ClothesCard key={p.id} url={p.url} />)}
     </div>
   );
 }

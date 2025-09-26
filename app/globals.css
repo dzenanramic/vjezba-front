@@ -118,5 +118,21 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Ensure body spans at least dynamic viewport height */
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  @layer utilities {
+    .vh-safe {
+      height: 100dvh;
+      height: calc(var(--vh, 1vh) * 100);
+    }
+    .cards-boundary {
+      width: 100%;
+      max-width: 680px; /* Desktop upper bound */
+      padding-left: 1rem;
+      padding-right: 1.25rem; /* extra right space so draggable cards do not trigger horizontal scroll */
+    }
   }
 }

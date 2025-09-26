@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import { CustomTrigger } from "@/components/ui/CustomTrigger";
+import { ViewportHeightProvider } from "@/components/ui/ViewportHeightProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ViewportHeightProvider />
         <SidebarProvider>
           <AppSidebar />
           <main>

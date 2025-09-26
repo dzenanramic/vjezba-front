@@ -1,13 +1,11 @@
-import WardrobePage from "../components/ui/WardrobePage";
-import TabNavigation from "../components/ui/TabNavigation";
 import UploadingPage from "@/components/ui/UploadingPage";
 
 export default function Home() {
   return (
-    <div className="font-sans flex flex-col min-h-[90vh]">
+    <div className="font-sans flex flex-col min-h-[100dvh]">
       {/* Header */}
-      <header className="w-full">
-        <h1 className="text-2xl font-bold text-center p-4">Moj Ormar</h1>
+      <header className="w-full pt-[env(safe-area-inset-top)]">
+        <h1 className="text-2xl font-bold text-center p-4 pb-2">Moj Ormar</h1>
       </header>
 
       {/* Main content - full width */}

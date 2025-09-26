@@ -11,18 +11,20 @@ function ClothesCard(props) {
 
   return (
     <Rnd
-      // Place new items within the visible viewport (was y: -400 which hid images)
-      default={{ x: 100, y: 0, width: size.width, height: size.height }}
+      default={{ x: 40, y: 0, width: size.width, height: size.height }}
       lockAspectRatio
       minWidth={100}
       minHeight={100}
       bounds="parent"
+      dragGrid={[1, 1]}
+      resizeGrid={[10, 10]}
+      style={{ maxWidth: "100%", maxHeight: "100%" }}
     >
-      <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
+      <div className="w-full h-full relative flex items-center justify-center overflow-hidden ">
         <img
           src={props.url}
           alt="pants preview"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain pointer-events-none select-none"
           onLoad={handleImageLoad}
         />
 

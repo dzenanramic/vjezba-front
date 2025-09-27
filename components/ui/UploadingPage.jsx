@@ -17,6 +17,8 @@ function UploadingPage() {
     incrementBadge,
     editedPhotos,
     shownPhotos,
+    removeShownPhoto,
+    removeOriginalPic,
   } = useUploadStore();
 
   const uploadImg = async () => {
@@ -39,9 +41,64 @@ function UploadingPage() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-[100dvh] pb-[calc(env(safe-area-inset-bottom)+80px)]">
+    <div className="flex flex-col items-center min-h-[100dvh] pb-[calc(env(safe-area-inset-bottom)+80px)] lg:pb-10 w-full">
+      {/* Desktop Toolbar (replaces bottom bar) */}
+      <div className="hidden lg:flex items-center gap-4 w-full max-w-5xl mx-auto sticky top-0 z-30 bg-white/70 backdrop-blur-xl border border-gray-200 rounded-2xl px-6 py-3 mt-2 shadow-sm">
+        <label className="cursor-pointer">
+          <input
+            type="file"
+            accept="image/*"
+            disabled={loading}
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) addPic(file);
+            }}
+          />
+          <span className="inline-flex items-center bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl px-4 py-2 text-sm font-medium border border-gray-300 shadow-sm transition cursor-pointer">
+            📂 Odaberi sliku
+          </span>
+        </label>
+        <button
+          onClick={uploadImg}
+          disabled={!pics.length || loading}
+          className="rounded-xl border px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 transition disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                />
+              </svg>
+              Obrada...
+            </span>
+          ) : (
+            "✨ Ukolni pozadinu"
+          )}
+        </button>
+        <div className="ml-auto text-xs text-gray-500 pr-2 hidden xl:block">
+          Savjet: Možete povući i promijeniti veličinu svake slike.
+        </div>
+      </div>
+
       {/* Gallery */}
-      <div className="flex-grow py-6 w-[96%] max-w-2xl px-2 sm:px-0 overflow-y-auto overflow-x-hidden">
+      <div className="flex-grow py-6 w-full max-w-5xl px-2 sm:px-4 lg:px-2 overflow-y-auto overflow-x-hidden">
         {error && (
           <div className="mb-4 w-full rounded-xl bg-red-50 text-red-700 px-4 py-3 text-center shadow-md border border-red-200 animate-fadeIn">
             {error}
@@ -71,19 +128,29 @@ function UploadingPage() {
           </div>
         )}
 
-        {picURLs.map((p) => (
-          <ClothesCard key={p} url={p} />
-        ))}
-        {shownPhotos &&
-          shownPhotos.map((id) => {
-            const photo = editedPhotos.find((p) => p.id === id);
-            if (!photo) return null;
-            return <ClothesCard key={photo.id} url={photo.url} />;
-          })}
+        {/* Drag canvas with large vertical space for free movement */}
+        <div className="drag-canvas relative w-full min-h-[1400px] md:min-h-[1800px] border border-dashed border-transparent">
+          {picURLs.map((p) => (
+            <ClothesCard key={p} url={p} onRemove={removeOriginalPic} />
+          ))}
+          {shownPhotos &&
+            shownPhotos.map((id) => {
+              const photo = editedPhotos.find((p) => p.id === id);
+              if (!photo) return null;
+              return (
+                <ClothesCard
+                  key={photo.id}
+                  id={photo.id}
+                  url={photo.url}
+                  onRemove={removeShownPhoto}
+                />
+              );
+            })}
+        </div>
       </div>
 
       {/* Bottom Action Bar */}
-      <div className="fixed bottom-2 left-0 right-0 mx-auto w-full max-w-2xl bg-white/80 backdrop-blur-xl flex justify-center gap-3 p-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] border-t border-gray-200 shadow-lg rounded-t-2xl z-20 animate-slideUp">
+      <div className="fixed lg:hidden bottom-2 left-0 right-0 mx-auto w-full max-w-2xl bg-white/80 backdrop-blur-xl flex justify-center gap-3 p-4 pt-2 pb-[calc(1rem+env(safe-area-inset-bottom))] border-t border-gray-200 shadow-lg rounded-t-2xl z-20 animate-slideUp">
         <label className="flex-1 cursor-pointer">
           <input
             type="file"

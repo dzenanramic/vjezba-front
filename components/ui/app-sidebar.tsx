@@ -12,7 +12,7 @@ import useUploadStore from "@/store/useUploadStore";
 import Image from "next/image";
 
 export function AppSidebar() {
-  const { editedPhotos, setShownPhotos } = useUploadStore();
+  const { editedPhotos, setShownPhotos, resetBadge } = useUploadStore();
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -35,6 +35,7 @@ export function AppSidebar() {
                   onClick={() => {
                     setShownPhotos(photo.id);
                     toggleSidebar();
+                    resetBadge();
                   }}
                 />
                 <SidebarSeparator />

@@ -34,7 +34,7 @@ export default function RootLayout({
         <ViewportHeightProvider />
         <SidebarProvider>
           <AppSidebar />
-          <main className="mx-auto w-full max-w-4xl px-2 sm:px-6 py-6 pb-0 rounded-2xl shadow-xl bg-white/80 min-h-[80dvh] max-h-[90dvh] mt-6 overflow-y-hidden">
+          <main className="mx-auto w-full max-w-6xl px-2 sm:px-6 py-6 pb-0 rounded-2xl shadow-xl bg-white/80 min-h-[80dvh] lg:min-h-[calc(100dvh-3rem)] max-h-[90dvh] lg:max-h-none mt-6 overflow-y-hidden lg:overflow-visible transition-[width,height] ease-linear">
             <CustomTrigger />
             {children}
           </main>

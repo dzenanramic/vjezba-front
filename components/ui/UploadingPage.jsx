@@ -2,6 +2,7 @@
 import useUploadStore from "@/store/useUploadStore";
 import { uploadImage } from "@/lib/upload";
 import ClothesCard from "../shared/ClothesCard";
+import { useEffect, useRef, useState } from "react";
 
 function UploadingPage() {
   const {
@@ -21,6 +22,17 @@ function UploadingPage() {
     removeOriginalPic,
   } = useUploadStore();
 
+  // Local toast (success) state
+  const [successMsg, setSuccessMsg] = useState("");
+  const toastTimerRef = useRef(null);
+
+  // Clear any pending timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
   const uploadImg = async () => {
     setLoading(true);
     setError(null);
@@ -31,6 +43,10 @@ function UploadingPage() {
       addPic(processed);
       setEditedPhotos(processed);
       incrementBadge();
+      // Show success toast
+      setSuccessMsg(" Pozadina je uspješno uklonjena");
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setSuccessMsg(""), 3500);
     } catch (err) {
       console.error("Background removal failed", err);
       setError("❌ " + (err?.message || "Failed to upload image"));
@@ -42,6 +58,17 @@ function UploadingPage() {
 
   return (
     <div className="flex flex-col items-center min-h-[100dvh] pb-[calc(env(safe-area-inset-bottom)+80px)] lg:pb-10 w-full">
+      {/* Success Toast */}
+      {successMsg && (
+        <div className="fixed bottom-18 right-4 z-[100] animate-fadeIn">
+          <div className="rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 shadow-lg text-sm font-medium flex items-center gap-2">
+            <span role="img" aria-label="success">
+              ✅
+            </span>
+            {successMsg}
+          </div>
+        </div>
+      )}
       {/* Desktop Toolbar (replaces bottom bar) */}
       <div className="hidden lg:flex items-center gap-4 w-full max-w-5xl mx-auto sticky top-0 z-30 bg-white/70 backdrop-blur-xl border border-gray-200 rounded-2xl px-6 py-3 mt-2 shadow-sm">
         <label className="cursor-pointer">

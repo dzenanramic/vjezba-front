@@ -9,7 +9,7 @@ export function CustomTrigger() {
   const { toggleSidebar } = useSidebar();
 
   return (
-    <div className="fixed top-[calc(env(safe-area-inset-top)+8px)] left-[calc(env(safe-area-inset-left)+8px)] z-30 w-10 h-10">
+    <div className="fixed top-[calc(env(safe-area-inset-top)+32px)] left-[calc(env(safe-area-inset-left)+18px)] z-30 w-10 h-10">
       <button
         onClick={() => {
           toggleSidebar();

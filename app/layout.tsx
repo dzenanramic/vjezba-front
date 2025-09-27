@@ -29,12 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-[#f8fafc] to-[#e0e7ef] min-h-[100dvh]`}
       >
         <ViewportHeightProvider />
         <SidebarProvider>
           <AppSidebar />
-          <main>
+          <main className="mx-auto w-full max-w-4xl px-2 sm:px-6 py-6 pb-0 rounded-2xl shadow-xl bg-white/80 min-h-[80dvh] max-h-[90dvh] mt-6 overflow-y-hidden">
             <CustomTrigger />
             {children}
           </main>

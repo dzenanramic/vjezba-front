@@ -1,6 +1,36 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-geist-sans), "Inter", "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  color: var(--foreground);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #e5e7eb;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+* {
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -118,7 +148,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Ensure body spans at least dynamic viewport height */
     min-height: 100dvh;
     overflow-x: hidden;
   }
@@ -130,9 +159,9 @@
     }
     .cards-boundary {
       width: 100%;
-      max-width: 680px; /* Desktop upper bound */
+      max-width: 680px;
       padding-left: 1rem;
-      padding-right: 1.25rem; /* extra right space so draggable cards do not trigger horizontal scroll */
+      padding-right: 1.25rem;
     }
   }
 }
